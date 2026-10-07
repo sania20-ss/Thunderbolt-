@@ -1,5 +1,4 @@
 import { EmailMessage } from '../types/auth';
-import { dbService } from './db';
 
 const STORAGE_KEY_EMAILS = 'secureauth_mailbox_messages';
 
@@ -19,13 +18,17 @@ class EmailOtpService {
       if (stored) {
         this.messages = JSON.parse(stored);
       }
-    } catch (e) {
+    } catch {
       this.messages = [];
     }
   }
 
   private saveMessages() {
-    localStorage.setItem(STORAGE_KEY_EMAILS, JSON.stringify(this.messages));
+    try {
+      localStorage.setItem(STORAGE_KEY_EMAILS, JSON.stringify(this.messages));
+    } catch {
+      // safe fallback
+    }
   }
 
   public subscribe(listener: EmailListener) {
@@ -40,7 +43,6 @@ class EmailOtpService {
   }
 
   public generateOtpCode(): string {
-    // 6-digit numeric OTP
     const code = Math.floor(100000 + Math.random() * 900000).toString();
     return code;
   }
@@ -48,13 +50,11 @@ class EmailOtpService {
   public sendOtpEmail(
     toEmail: string,
     purpose: 'REGISTRATION' | 'LOGIN_2FA' | 'PASSWORD_RESET',
-    userName?: string
+    userName?: string,
+    forcedOtpCode?: string
   ): { otpCode: string; message: EmailMessage } {
-    const otpCode = this.generateOtpCode();
+    const otpCode = forcedOtpCode || this.generateOtpCode();
     const durationMinutes = 5;
-
-    // Save in MySQL simulation
-    dbService.createOtp(toEmail, otpCode, purpose, durationMinutes);
 
     const subjectMap = {
       REGISTRATION: 'Verify your account - Your SecureAuth OTP Code',
@@ -62,13 +62,7 @@ class EmailOtpService {
       PASSWORD_RESET: 'Password Reset Request - SecureAuth Verification Code',
     };
 
-    const actionMap = {
-      REGISTRATION: 'complete your account registration',
-      LOGIN_2FA: 'authorize your sign-in request',
-      PASSWORD_RESET: 'reset your account password',
-    };
-
-    const subject = subjectMap[purpose];
+    const subject = subjectMap[purpose] || 'Your Verification Code';
     const previewText = `Your one-time verification code is ${otpCode}. Valid for ${durationMinutes} minutes.`;
 
     const message: EmailMessage = {

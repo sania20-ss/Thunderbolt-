@@ -32,7 +32,7 @@ public class User {
     @Column(name = "last_name", nullable = false, length = 50)
     private String lastName;
 
-    @Column(length = 25)
+    @Column(length = 20)
     private String phone;
 
     @Column(nullable = false, length = 20)
@@ -53,6 +53,12 @@ public class User {
     @Column(name = "two_factor_enabled", nullable = false)
     private boolean twoFactorEnabled;
 
+    @Column(name = "avatar_url", length = 255)
+    private String avatarUrl;
+
+    @Column(columnDefinition = "TEXT")
+    private String bio;
+
     @Column(nullable = false, length = 20)
     private String status; // ACTIVE, PENDING_OTP, SUSPENDED
 
@@ -64,9 +70,17 @@ public class User {
 
     @PrePersist
     protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
+        if (this.createdAt == null) {
+            this.createdAt = LocalDateTime.now();
+        }
         if (this.status == null) {
             this.status = "PENDING_OTP";
+        }
+        if (this.role == null) {
+            this.role = "USER";
+        }
+        if (this.salt == null) {
+            this.salt = "BCrypt";
         }
     }
 }

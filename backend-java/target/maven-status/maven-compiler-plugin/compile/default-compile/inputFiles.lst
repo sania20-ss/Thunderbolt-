@@ -1,2 +1,14 @@
+D:\new  login\backend-java\src\main\java\com\auth\model\EmailOtp.java
+D:\new  login\backend-java\src\main\java\com\auth\service\UserService.java
+D:\new  login\backend-java\src\main\java\com\auth\AuthApplication.java
+D:\new  login\backend-java\src\main\java\com\auth\config\DataInitializer.java
+D:\new  login\backend-java\src\main\java\com\auth\service\CaptchaService.java
 D:\new  login\backend-java\src\main\java\com\auth\model\User.java
+D:\new  login\backend-java\src\main\java\com\auth\repository\UserRepository.java
+D:\new  login\backend-java\src\main\java\com\auth\repository\EmailOtpRepository.java
+D:\new  login\backend-java\src\main\java\com\auth\repository\SecurityAuditLogRepository.java
+D:\new  login\backend-java\src\main\java\com\auth\config\WebMvcConfig.java
+D:\new  login\backend-java\src\main\java\com\auth\model\SecurityAuditLog.java
+D:\new  login\backend-java\src\main\java\com\auth\service\EmailOtpService.java
 D:\new  login\backend-java\src\main\java\com\auth\controller\AuthController.java
+D:\new  login\backend-java\src\main\java\com\auth\config\SecurityConfig.java

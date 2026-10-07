@@ -208,7 +208,7 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({
               className="flex-1 sm:flex-none px-3.5 py-2 text-xs font-medium text-slate-300 hover:text-white bg-slate-800/80 hover:bg-slate-700 border border-slate-700 rounded-xl transition-colors flex items-center justify-center gap-1.5"
             >
               <Database className="w-3.5 h-3.5 text-indigo-400" />
-              <span>Inspect in MySQL</span>
+              {/* <span>Inspect in MySQL</span> */}
             </button>
             <button
               onClick={onLogout}
@@ -402,7 +402,7 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({
           </div>
 
           {/* Database Identity Card */}
-          <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+          {/* <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
             <h3 className="text-sm font-bold text-white flex items-center gap-2">
               <Database className="w-4 h-4 text-indigo-400" />
               <span>MySQL Metadata</span>
@@ -447,7 +447,7 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({
                 <span>View Java Spring JPA Entity</span>
               </button>
             </div>
-          </div>
+          </div> */}
         </div>
       )}
 

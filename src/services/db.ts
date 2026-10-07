@@ -1,8 +1,16 @@
 import { User, OtpRecord, SecurityAuditLog, MysqlTable, MysqlColumn } from '../types/auth';
 
+// ============================================================================
+// LOCAL STORAGE DATABASE STATE (COMMENTED OUT)
+// The application is now directly connected to the Java Spring Boot Backend API
+// (http://localhost:8080/api/auth) backed by MySQL database persistence.
+// ============================================================================
+
+/*
 const STORAGE_KEY_USERS = 'secureauth_mysql_users';
 const STORAGE_KEY_OTPS = 'secureauth_mysql_otps';
 const STORAGE_KEY_LOGS = 'secureauth_mysql_logs';
+*/
 
 // Simple SHA-256 simulation for demonstration password hashing
 export async function hashPassword(password: string, salt: string): Promise<string> {
@@ -17,7 +25,7 @@ export function generateSalt(): string {
   return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 }
 
-// Initial seed users
+// Initial seed users representation for MySQL Studio Inspector
 const INITIAL_USERS: User[] = [
   {
     id: 1,
@@ -28,8 +36,8 @@ const INITIAL_USERS: User[] = [
     phone: '+1 (555) 349-8821',
     role: 'ADMIN',
     department: 'Cybersecurity Operations',
-    passwordHash: '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918', // 'Admin@2026!'
-    salt: 'salt_master_adm_99',
+    passwordHash: '$2a$10$e8wFhJ0xY7gQ8B9V1Z3X8uK5s9.x8fJ9a1.0Z1X3Y5b7c9e1g3i5', // BCrypt
+    salt: 'BCrypt',
     isVerified: true,
     twoFactorEnabled: false,
     avatarUrl: '',
@@ -47,8 +55,8 @@ const INITIAL_USERS: User[] = [
     phone: '+1 (555) 892-1204',
     role: 'DEVELOPER',
     department: 'Cloud Infrastructure',
-    passwordHash: '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918',
-    salt: 'salt_dev_sarah_42',
+    passwordHash: '$2a$10$e8wFhJ0xY7gQ8B9V1Z3X8uK5s9.x8fJ9a1.0Z1X3Y5b7c9e1g3i5',
+    salt: 'BCrypt',
     isVerified: true,
     twoFactorEnabled: true,
     avatarUrl: '',
@@ -60,7 +68,7 @@ const INITIAL_USERS: User[] = [
 ];
 
 class MysqlDatabaseService {
-  private users: User[] = [];
+  private users: User[] = [...INITIAL_USERS];
   private otps: OtpRecord[] = [];
   private logs: SecurityAuditLog[] = [];
   private nextUserId = 3;
@@ -72,6 +80,11 @@ class MysqlDatabaseService {
   }
 
   private loadState() {
+    // =========================================================================
+    // LOCAL STORAGE DB LOADING - COMMENTED OUT
+    // All persistence is now routed to Java Backend (Spring Data JPA + MySQL)
+    // =========================================================================
+    /*
     try {
       const storedUsers = localStorage.getItem(STORAGE_KEY_USERS);
       if (storedUsers) {
@@ -104,18 +117,29 @@ class MysqlDatabaseService {
       console.warn('Failed to parse database state from localStorage', e);
       this.users = [...INITIAL_USERS];
     }
+    */
+    this.users = [...INITIAL_USERS];
   }
 
   private saveUsers() {
-    localStorage.setItem(STORAGE_KEY_USERS, JSON.stringify(this.users));
+    // =========================================================================
+    // LOCAL STORAGE DB SAVING - COMMENTED OUT
+    // =========================================================================
+    // localStorage.setItem(STORAGE_KEY_USERS, JSON.stringify(this.users));
   }
 
   private saveOtps() {
-    localStorage.setItem(STORAGE_KEY_OTPS, JSON.stringify(this.otps));
+    // =========================================================================
+    // LOCAL STORAGE DB SAVING - COMMENTED OUT
+    // =========================================================================
+    // localStorage.setItem(STORAGE_KEY_OTPS, JSON.stringify(this.otps));
   }
 
   private saveLogs() {
-    localStorage.setItem(STORAGE_KEY_LOGS, JSON.stringify(this.logs));
+    // =========================================================================
+    // LOCAL STORAGE DB SAVING - COMMENTED OUT
+    // =========================================================================
+    // localStorage.setItem(STORAGE_KEY_LOGS, JSON.stringify(this.logs));
   }
 
   // --- Users CRUD ---
@@ -221,7 +245,6 @@ class MysqlDatabaseService {
     purpose: OtpRecord['purpose'] = 'REGISTRATION',
     durationMinutes = 5
   ): OtpRecord {
-    // Invalidate previous unverified OTPs for this email and purpose
     this.otps.forEach(o => {
       if (o.email.toLowerCase() === email.toLowerCase() && o.purpose === purpose && !o.verified) {
         o.expiresAt = Date.now() - 1000;
@@ -324,7 +347,7 @@ class MysqlDatabaseService {
       userId,
       email,
       action,
-      ipAddress: '192.168.1.104',
+      ipAddress: '127.0.0.1',
       userAgent: navigator.userAgent.split(' ')[0] || 'Mozilla/5.0',
       timestamp: new Date().toISOString(),
       status,
@@ -411,7 +434,6 @@ class MysqlDatabaseService {
     const cleanSql = sql.trim().replace(/;$/, '');
     const upperSql = cleanSql.toUpperCase();
 
-    // Latency simulation (3 - 8ms typical for local MySQL)
     const latencyMs = Math.round((performance.now() - startTime + (Math.random() * 5 + 3)) * 10) / 10;
 
     try {
@@ -439,7 +461,6 @@ class MysqlDatabaseService {
         };
       }
 
-      // SELECT queries
       if (upperSql.startsWith('SELECT')) {
         let tableName = '';
         if (upperSql.includes('FROM USERS')) tableName = 'users';
@@ -450,79 +471,37 @@ class MysqlDatabaseService {
         }
 
         if (tableName === 'users') {
-          let usersToReturn = [...this.users];
-          if (upperSql.includes('WHERE')) {
-            if (upperSql.includes('IS_VERIFIED = 1')) {
-              usersToReturn = usersToReturn.filter(u => u.isVerified);
-            } else if (upperSql.includes('ROLE = \'ADMIN\'')) {
-              usersToReturn = usersToReturn.filter(u => u.role === 'ADMIN');
-            }
-          }
-
-          const columns = ['id', 'username', 'email', 'first_name', 'last_name', 'phone', 'role', 'department', 'is_verified', 'two_factor_enabled', 'status', 'created_at', 'last_login_at'];
-          const rows = usersToReturn.map(u => [
-            u.id,
-            u.username,
-            u.email,
-            u.firstName,
-            u.lastName,
-            u.phone,
-            u.role,
-            u.department,
-            u.isVerified ? 1 : 0,
-            u.twoFactorEnabled ? 1 : 0,
-            u.status,
-            u.createdAt.substring(0, 19).replace('T', ' '),
-            u.lastLoginAt ? u.lastLoginAt.substring(0, 19).replace('T', ' ') : 'NULL'
-          ]);
-
-          return { success: true, columns, rows, latencyMs };
+          const cols = ['id', 'username', 'email', 'first_name', 'last_name', 'role', 'status', 'created_at'];
+          const rows = this.users.map(u => [u.id, u.username, u.email, u.firstName, u.lastName, u.role, u.status, u.createdAt]);
+          return { success: true, columns: cols, rows, latencyMs };
         }
 
         if (tableName === 'email_otps') {
-          const columns = ['id', 'email', 'otp_code', 'purpose', 'expires_in_sec', 'attempts', 'verified', 'created_at'];
-          const rows = this.otps.map(o => [
-            o.id,
-            o.email,
-            o.otpCode,
-            o.purpose,
-            Math.max(0, Math.round((o.expiresAt - Date.now()) / 1000)),
-            o.attempts,
-            o.verified ? 1 : 0,
-            o.createdAt.substring(0, 19).replace('T', ' ')
-          ]);
-          return { success: true, columns, rows, latencyMs };
+          const cols = ['id', 'email', 'otp_code', 'purpose', 'attempts', 'verified', 'created_at'];
+          const rows = this.otps.map(o => [o.id, o.email, o.otpCode, o.purpose, o.attempts, o.verified ? 1 : 0, o.createdAt]);
+          return { success: true, columns: cols, rows, latencyMs };
         }
 
         if (tableName === 'security_audit_logs') {
-          const columns = ['id', 'user_id', 'email', 'action', 'ip_address', 'status', 'details', 'timestamp'];
-          const rows = this.logs.slice(0, 50).map(l => [
-            l.id,
-            l.userId ?? 'NULL',
-            l.email,
-            l.action,
-            l.ipAddress,
-            l.status,
-            l.details,
-            l.timestamp.substring(0, 19).replace('T', ' ')
-          ]);
-          return { success: true, columns, rows, latencyMs };
+          const cols = ['id', 'email', 'action', 'status', 'ip_address', 'timestamp'];
+          const rows = this.logs.map(l => [l.id, l.email, l.action, l.status, l.ipAddress, l.timestamp]);
+          return { success: true, columns: cols, rows, latencyMs };
         }
       }
 
       return {
         success: true,
-        columns: ['Query OK'],
-        rows: [[`Statement executed successfully in MySQL engine. Query: ${cleanSql}`]],
-        latencyMs,
-        affectedRows: 1
+        columns: ['Status'],
+        rows: [['Query executed successfully in MySQL']],
+        affectedRows: 1,
+        latencyMs
       };
-    } catch (err: any) {
+    } catch (e: any) {
       return {
         success: false,
         columns: [],
         rows: [],
-        message: err.message || 'MySQL query execution error',
+        message: e.message || 'SQL Execution Error',
         latencyMs
       };
     }
@@ -532,11 +511,10 @@ class MysqlDatabaseService {
     return `-- ========================================================
 -- SecureAuth MySQL Database Schema (MySQL 8.0+)
 -- Database: auth_db
--- Character Set: utf8mb4 / Collation: utf8mb4_unicode_ci
 -- ========================================================
 
-CREATE DATABASE IF NOT EXISTS \`auth_db\` 
-  CHARACTER SET utf8mb4 
+CREATE DATABASE IF NOT EXISTS \`auth_db\`
+  CHARACTER SET utf8mb4
   COLLATE utf8mb4_unicode_ci;
 
 USE \`auth_db\`;
@@ -550,15 +528,15 @@ CREATE TABLE \`users\` (
   \`first_name\` VARCHAR(50) NOT NULL,
   \`last_name\` VARCHAR(50) NOT NULL,
   \`phone\` VARCHAR(25) DEFAULT NULL,
-  \`role\` ENUM('ADMIN', 'DEVELOPER', 'MANAGER', 'USER') NOT NULL DEFAULT 'USER',
+  \`role\` VARCHAR(20) NOT NULL DEFAULT 'USER',
   \`department\` VARCHAR(100) DEFAULT NULL,
   \`password_hash\` VARCHAR(255) NOT NULL,
-  \`salt\` VARCHAR(64) NOT NULL,
+  \`salt\` VARCHAR(64) NOT NULL DEFAULT 'BCrypt',
   \`is_verified\` TINYINT(1) NOT NULL DEFAULT 0,
   \`two_factor_enabled\` TINYINT(1) NOT NULL DEFAULT 0,
   \`avatar_url\` VARCHAR(255) DEFAULT NULL,
   \`bio\` TEXT DEFAULT NULL,
-  \`status\` ENUM('ACTIVE', 'PENDING_OTP', 'SUSPENDED') NOT NULL DEFAULT 'PENDING_OTP',
+  \`status\` VARCHAR(20) NOT NULL DEFAULT 'PENDING_OTP',
   \`created_at\` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   \`last_login_at\` DATETIME DEFAULT NULL,
   PRIMARY KEY (\`id\`),
@@ -573,8 +551,8 @@ CREATE TABLE \`email_otps\` (
   \`id\` BIGINT NOT NULL AUTO_INCREMENT,
   \`email\` VARCHAR(100) NOT NULL,
   \`otp_code\` VARCHAR(6) NOT NULL,
-  \`purpose\` ENUM('REGISTRATION', 'LOGIN_2FA', 'PASSWORD_RESET') NOT NULL DEFAULT 'REGISTRATION',
-  \`expires_at\` BIGINT NOT NULL,
+  \`purpose\` VARCHAR(30) NOT NULL DEFAULT 'REGISTRATION',
+  \`expires_at\` DATETIME NOT NULL,
   \`attempts\` INT NOT NULL DEFAULT 0,
   \`verified\` TINYINT(1) NOT NULL DEFAULT 0,
   \`created_at\` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -592,15 +570,15 @@ CREATE TABLE \`security_audit_logs\` (
   \`action\` VARCHAR(50) NOT NULL,
   \`ip_address\` VARCHAR(45) NOT NULL,
   \`user_agent\` VARCHAR(255) DEFAULT NULL,
-  \`status\` ENUM('SUCCESS', 'FAILURE', 'WARNING') NOT NULL,
+  \`status\` VARCHAR(20) NOT NULL,
   \`details\` TEXT,
   \`timestamp\` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (\`id\`),
   INDEX \`idx_audit_email_time\` (\`email\`, \`timestamp\`),
   CONSTRAINT \`fk_audit_user\` FOREIGN KEY (\`user_id\`) REFERENCES \`users\` (\`id\`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-`;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;`;
   }
 }
 
 export const dbService = new MysqlDatabaseService();
+

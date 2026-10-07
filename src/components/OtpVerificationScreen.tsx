@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Mail, CheckCircle2, AlertCircle, RefreshCw, ArrowLeft, KeyRound, ExternalLink, Shield } from 'lucide-react';
-import { dbService } from '../services/db';
+import { authApi } from '../services/authApi';
 import { emailService } from '../services/emailService';
 
 interface OtpVerificationScreenProps {
@@ -56,7 +56,6 @@ export const OtpVerificationScreen: React.FC<OtpVerificationScreenProps> = ({
     const newDigits = [...otpDigits];
 
     if (cleaned.length > 1) {
-      // Handle paste in individual box
       handlePastedCode(cleaned);
       return;
     }
@@ -107,7 +106,7 @@ export const OtpVerificationScreen: React.FC<OtpVerificationScreenProps> = ({
     }
   };
 
-  const triggerVerify = (fullCode?: string) => {
+  const triggerVerify = async (fullCode?: string) => {
     const code = fullCode || otpDigits.join('');
     if (code.length !== 6) {
       setErrorMsg('Please enter all 6 digits of the OTP code.');
@@ -117,30 +116,38 @@ export const OtpVerificationScreen: React.FC<OtpVerificationScreenProps> = ({
     setIsVerifying(true);
     setErrorMsg('');
 
-    setTimeout(() => {
-      const result = dbService.verifyOtp(email, code, purpose);
+    try {
+      // Call Java Spring Boot REST Endpoint: POST /api/auth/verify-otp
+      const result = await authApi.verifyOtp(email, code, purpose);
       setIsVerifying(false);
 
-      if (result.success) {
-        setSuccessAnimation(true);
-        setTimeout(() => {
-          onSuccess();
-        }, 1200);
-      } else {
-        setErrorMsg(result.message);
-      }
-    }, 400);
+      setSuccessAnimation(true);
+      setTimeout(() => {
+        onSuccess();
+      }, 1000);
+    } catch (err: any) {
+      setIsVerifying(false);
+      setErrorMsg(err.message || 'Verification failed. Please check the code and try again.');
+    }
   };
 
-  const handleResend = () => {
+  const handleResend = async () => {
     if (resendCooldown > 0) return;
 
     setErrorMsg('');
-    const { otpCode } = emailService.sendOtpEmail(email, purpose);
-    setTimeLeft(300);
-    setResendCooldown(30);
-    setResendNotice(`New OTP dispatched! (Simulated test code: ${otpCode})`);
-    setTimeout(() => setResendNotice(''), 6000);
+    try {
+      // Call Java Spring Boot REST Endpoint: POST /api/auth/resend-otp
+      const res = await authApi.resendOtp(email, purpose);
+      if (res && (res as any).otpCode) {
+        emailService.sendOtpEmail(email, purpose, undefined, (res as any).otpCode);
+      }
+      setTimeLeft(300);
+      setResendCooldown(30);
+      setResendNotice('New verification code dispatched via JavaMailSender!');
+      setTimeout(() => setResendNotice(''), 6000);
+    } catch (err: any) {
+      setErrorMsg(err.message || 'Failed to resend code');
+    }
   };
 
   // Find latest OTP for quick fill helper
@@ -243,7 +250,7 @@ export const OtpVerificationScreen: React.FC<OtpVerificationScreenProps> = ({
         {successAnimation && (
           <div className="flex items-center justify-center gap-1.5 text-xs text-emerald-400 mt-3 font-medium animate-bounce">
             <CheckCircle2 className="w-4 h-4" />
-            <span>Code verified! Directing to software...</span>
+            <span>Verified in MySQL! Redirecting...</span>
           </div>
         )}
 
@@ -265,17 +272,17 @@ export const OtpVerificationScreen: React.FC<OtpVerificationScreenProps> = ({
         {isVerifying ? (
           <>
             <RefreshCw className="w-4 h-4 animate-spin" />
-            <span>Verifying Code...</span>
+            <span>Verifying via Java API...</span>
           </>
         ) : successAnimation ? (
           <>
             <CheckCircle2 className="w-4 h-4" />
-            <span>Verified</span>
+            <span>Verified in Java Backend</span>
           </>
         ) : (
           <>
             <Shield className="w-4 h-4" />
-            <span>Verify &amp; Continue</span>
+            <span>Verify &amp; Activate Account</span>
           </>
         )}
       </button>
@@ -299,7 +306,7 @@ export const OtpVerificationScreen: React.FC<OtpVerificationScreenProps> = ({
         </button>
       </div>
 
-      {/* Simulated Email link */}
+      {/* Software Mailbox link */}
       <div className="mt-4 pt-3 text-center border-t border-slate-800/50">
         <button
           type="button"

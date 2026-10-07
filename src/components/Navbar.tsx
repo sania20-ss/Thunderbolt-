@@ -49,7 +49,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           >
             Auth Portal
           </button>
-
+{/* 
           <button
             onClick={onOpenInbox}
             className="relative px-3 py-1.5 text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-900 rounded-lg transition-colors whitespace-nowrap flex items-center gap-1.5"
@@ -61,9 +61,9 @@ export const Navbar: React.FC<NavbarProps> = ({
                 {unreadEmailCount}
               </span>
             )}
-          </button>
+          </button> */}
 
-          <button
+          {/* <button
             onClick={() => onViewChange('mysql')}
             className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-colors whitespace-nowrap flex items-center gap-1.5 ${
               currentView === 'mysql'
@@ -73,9 +73,9 @@ export const Navbar: React.FC<NavbarProps> = ({
           >
             <Database className="w-3.5 h-3.5 text-sky-400" />
             <span>MySQL Studio</span>
-          </button>
+          </button> */}
 
-          <button
+          {/* <button
             onClick={() => onViewChange('java')}
             className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-colors whitespace-nowrap flex items-center gap-1.5 ${
               currentView === 'java'
@@ -85,7 +85,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           >
             <Code2 className="w-3.5 h-3.5 text-amber-400" />
             <span>Java Backend</span>
-          </button>
+          </button> */}
         </nav>
 
         {/* Zone 3: 1-2 primary actions */}
@@ -108,11 +108,13 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <LogOut className="w-4 h-4" />
               </button>
             </div>
-          ) : (
+          ) 
+          : (
             <span className="text-[11px] text-slate-400 font-mono hidden md:inline">
-              MySQL 8.0 · Java Spring · Email OTP
+              Secure  Auth v1.0
             </span>
-          )}
+          )
+          }
         </div>
       </div>
     </header>
