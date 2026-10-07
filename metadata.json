@@ -1,0 +1,6 @@
+{
+  "name": "SecureAuth - Enterprise Login, Registration & MySQL System",
+  "description": "Full-stack authentication and user management software with Email OTP, CAPTCHA verification, MySQL database persistence, and Java Spring Boot backend integration.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
