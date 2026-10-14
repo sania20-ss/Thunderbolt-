@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class CaptchaService {
-
+    
     private static final String CHARSET = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ";
     private static final int CODE_LENGTH = 6;
     private static final long EXPIRATION_MS = 5 * 60 * 1000; // 5 minutes
