@@ -175,9 +175,9 @@ export const CaptchaBox: React.FC<CaptchaBoxProps> = ({
       <div className="flex items-center justify-between text-xs font-medium text-slate-400">
         <label htmlFor={`${idPrefix}-input`} className="flex items-center gap-1.5 text-slate-300">
           <ShieldCheck className="w-3.5 h-3.5 text-indigo-400" />
-          <span>Java Backend CAPTCHA Challenge</span>
+          <span> CAPTCHA Challenge</span>
         </label>
-        <span className="text-[11px] text-slate-400 font-mono">Backend-verified</span>
+        {/* <span className="text-[11px] text-slate-400 font-mono">Backend-verified</span> */}
       </div>
 
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
@@ -217,11 +217,10 @@ export const CaptchaBox: React.FC<CaptchaBoxProps> = ({
               onClick={handlePlayAudio}
               disabled={isSpeaking}
               title="Read characters aloud"
-              className={`p-1 rounded transition-colors ${
-                isSpeaking
+              className={`p-1 rounded transition-colors ${isSpeaking
                   ? 'text-indigo-400 bg-indigo-950/60 animate-pulse'
                   : 'text-slate-400 hover:text-white hover:bg-slate-700/60'
-              }`}
+                }`}
             >
               <Volume2 className="w-3.5 h-3.5" />
             </button>
@@ -239,13 +238,12 @@ export const CaptchaBox: React.FC<CaptchaBoxProps> = ({
             maxLength={6}
             autoComplete="off"
             spellCheck={false}
-            className={`w-full px-3.5 py-2.5 text-sm tracking-widest font-mono uppercase bg-slate-900/80 border rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 transition-all ${
-              isFilled
+            className={`w-full px-3.5 py-2.5 text-sm tracking-widest font-mono uppercase bg-slate-900/80 border rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 transition-all ${isFilled
                 ? 'border-emerald-500/80 focus:ring-emerald-500/30'
                 : error
-                ? 'border-rose-500 focus:ring-rose-500/30'
-                : 'border-slate-700 focus:border-indigo-500 focus:ring-indigo-500/30'
-            }`}
+                  ? 'border-rose-500 focus:ring-rose-500/30'
+                  : 'border-slate-700 focus:border-indigo-500 focus:ring-indigo-500/30'
+              }`}
           />
           {isFilled && (
             <div className="absolute right-3 top-1/2 -translate-y-1/2 text-emerald-400 flex items-center gap-1 text-xs">

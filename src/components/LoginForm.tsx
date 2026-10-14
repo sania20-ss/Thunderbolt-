@@ -120,12 +120,12 @@ export const LoginForm: React.FC<LoginFormProps> = ({
           <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-white">
             Welcome Back
           </h2>
-          <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+          {/* <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
             Java API Connected
-          </span>
+          </span> */}
         </div>
         <p className="text-xs sm:text-sm text-slate-400">
-          Sign in via Java Spring Boot 3 &amp; BCrypt Authentication
+          Sign in
         </p>
       </div>
 
@@ -236,12 +236,12 @@ export const LoginForm: React.FC<LoginFormProps> = ({
             {isLoading ? (
               <>
                 <RefreshCw className="w-4 h-4 animate-spin" />
-                <span>Authenticating with Java API...</span>
+                <span>Authenticating...</span>
               </>
             ) : (
               <>
                 <LogIn className="w-4 h-4" />
-                <span>Sign In via Java Backend</span>
+                <span>Sign In </span>
                 <ArrowRight className="w-4 h-4 ml-1" />
               </>
             )}

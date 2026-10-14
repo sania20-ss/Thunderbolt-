@@ -37,7 +37,7 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({
   onOpenJavaStudio,
 }) => {
   const [activeTab, setActiveTab] = useState<'profile' | 'security' | 'directory' | 'logs'>('profile');
-  
+
   // Profile edit state
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [profileForm, setProfileForm] = useState({
@@ -203,13 +203,13 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({
           </div>
 
           <div className="flex items-center gap-2 w-full sm:w-auto">
-            <button
+            {/* <button
               onClick={onOpenMysqlStudio}
               className="flex-1 sm:flex-none px-3.5 py-2 text-xs font-medium text-slate-300 hover:text-white bg-slate-800/80 hover:bg-slate-700 border border-slate-700 rounded-xl transition-colors flex items-center justify-center gap-1.5"
             >
               <Database className="w-3.5 h-3.5 text-indigo-400" />
-              {/* <span>Inspect in MySQL</span> */}
-            </button>
+              
+            </button> */}
             <button
               onClick={onLogout}
               className="flex-1 sm:flex-none px-3.5 py-2 text-xs font-medium text-rose-400 hover:text-rose-200 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 rounded-xl transition-colors flex items-center justify-center gap-1.5"
@@ -224,48 +224,44 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({
         <div className="flex items-center gap-1 sm:gap-2 mt-6 pt-4 border-t border-slate-800/80 overflow-x-auto">
           <button
             onClick={() => setActiveTab('profile')}
-            className={`px-3.5 py-1.5 text-xs font-medium rounded-lg transition-colors flex items-center gap-2 whitespace-nowrap ${
-              activeTab === 'profile'
-                ? 'bg-indigo-600 text-white shadow-sm'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
-            }`}
+            className={`px-3.5 py-1.5 text-xs font-medium rounded-lg transition-colors flex items-center gap-2 whitespace-nowrap ${activeTab === 'profile'
+              ? 'bg-indigo-600 text-white shadow-sm'
+              : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+              }`}
           >
             <User className="w-3.5 h-3.5" />
             <span>Profile Data</span>
           </button>
           <button
             onClick={() => setActiveTab('security')}
-            className={`px-3.5 py-1.5 text-xs font-medium rounded-lg transition-colors flex items-center gap-2 whitespace-nowrap ${
-              activeTab === 'security'
-                ? 'bg-indigo-600 text-white shadow-sm'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
-            }`}
+            className={`px-3.5 py-1.5 text-xs font-medium rounded-lg transition-colors flex items-center gap-2 whitespace-nowrap ${activeTab === 'security'
+              ? 'bg-indigo-600 text-white shadow-sm'
+              : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+              }`}
           >
             <Shield className="w-3.5 h-3.5" />
             <span>Security &amp; 2FA</span>
           </button>
           <button
             onClick={() => setActiveTab('directory')}
-            className={`px-3.5 py-1.5 text-xs font-medium rounded-lg transition-colors flex items-center gap-2 whitespace-nowrap ${
-              activeTab === 'directory'
-                ? 'bg-indigo-600 text-white shadow-sm'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
-            }`}
+            className={`px-3.5 py-1.5 text-xs font-medium rounded-lg transition-colors flex items-center gap-2 whitespace-nowrap ${activeTab === 'directory'
+              ? 'bg-indigo-600 text-white shadow-sm'
+              : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+              }`}
           >
             <Users className="w-3.5 h-3.5" />
             <span>Registered Users ({allUsers.length})</span>
           </button>
-          <button
+          {/* <button
             onClick={() => setActiveTab('logs')}
-            className={`px-3.5 py-1.5 text-xs font-medium rounded-lg transition-colors flex items-center gap-2 whitespace-nowrap ${
-              activeTab === 'logs'
+            className={`px-3.5 py-1.5 text-xs font-medium rounded-lg transition-colors flex items-center gap-2 whitespace-nowrap ${activeTab === 'logs'
                 ? 'bg-indigo-600 text-white shadow-sm'
                 : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
-            }`}
+              }`}
           >
             <Activity className="w-3.5 h-3.5" />
             <span>Audit Trail</span>
-          </button>
+          </button> */}
         </div>
       </div>
 
@@ -466,11 +462,10 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({
                   Requires a 6-digit OTP code dispatched to your registered email on every sign-in attempt.
                 </p>
               </div>
-              <span className={`text-xs px-2.5 py-1 rounded-full font-mono ${
-                twoFactorEnabled
-                  ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
-                  : 'bg-slate-800 text-slate-400'
-              }`}>
+              <span className={`text-xs px-2.5 py-1 rounded-full font-mono ${twoFactorEnabled
+                ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
+                : 'bg-slate-800 text-slate-400'
+                }`}>
                 {twoFactorEnabled ? 'ENABLED' : 'DISABLED'}
               </span>
             </div>
@@ -484,11 +479,10 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({
                 <button
                   type="button"
                   onClick={handleToggle2FA}
-                  className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors ${
-                    twoFactorEnabled
-                      ? 'bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/30'
-                      : 'bg-indigo-600 hover:bg-indigo-500 text-white'
-                  }`}
+                  className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors ${twoFactorEnabled
+                    ? 'bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/30'
+                    : 'bg-indigo-600 hover:bg-indigo-500 text-white'
+                    }`}
                 >
                   {twoFactorEnabled ? 'Disable 2FA' : 'Enable 2FA'}
                 </button>
@@ -504,11 +498,10 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({
             </h3>
 
             {pwdMsg.text && (
-              <div className={`mb-4 p-3 rounded-xl text-xs flex items-center gap-2 ${
-                pwdMsg.type === 'success'
-                  ? 'bg-emerald-500/10 border border-emerald-500/30 text-emerald-300'
-                  : 'bg-rose-500/10 border border-rose-500/30 text-rose-300'
-              }`}>
+              <div className={`mb-4 p-3 rounded-xl text-xs flex items-center gap-2 ${pwdMsg.type === 'success'
+                ? 'bg-emerald-500/10 border border-emerald-500/30 text-emerald-300'
+                : 'bg-rose-500/10 border border-rose-500/30 text-rose-300'
+                }`}>
                 {pwdMsg.type === 'success' ? (
                   <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                 ) : (
@@ -554,7 +547,7 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({
                   type="submit"
                   className="w-full py-2 px-4 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold rounded-lg transition-colors"
                 >
-                  Update &amp; Re-hash in MySQL
+                  Update
                 </button>
               </div>
             </form>
@@ -569,20 +562,20 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({
             <div>
               <h2 className="text-base font-bold text-white flex items-center gap-2">
                 <Users className="w-4 h-4 text-indigo-400" />
-                <span>MySQL Registered Users Directory (`users` table)</span>
+                <span> Registered Users Directory</span>
               </h2>
               <p className="text-xs text-slate-400">
-                View all user records registered and persisted in the MySQL engine.
+                View all user records registered and persisted.
               </p>
             </div>
 
-            <button
+            {/* <button
               onClick={handleExportUsers}
               className="px-3 py-1.5 text-xs font-medium text-slate-200 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg transition-colors flex items-center gap-1.5"
             >
               <Download className="w-3.5 h-3.5 text-indigo-400" />
               <span>Export JSON</span>
-            </button>
+            </button> */}
           </div>
 
           {/* Search & Filter */}
@@ -729,13 +722,12 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({
                       {log.email}
                     </td>
                     <td className="px-3.5 py-2.5">
-                      <span className={`text-[10px] font-mono px-2 py-0.5 rounded ${
-                        log.status === 'SUCCESS'
-                          ? 'bg-emerald-500/10 text-emerald-400'
-                          : log.status === 'WARNING'
+                      <span className={`text-[10px] font-mono px-2 py-0.5 rounded ${log.status === 'SUCCESS'
+                        ? 'bg-emerald-500/10 text-emerald-400'
+                        : log.status === 'WARNING'
                           ? 'bg-amber-500/10 text-amber-400'
                           : 'bg-rose-500/10 text-rose-400'
-                      }`}>
+                        }`}>
                         {log.status}
                       </span>
                     </td>
