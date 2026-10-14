@@ -174,4 +174,14 @@ public class UserService {
         if (email == null || email.isBlank()) return Optional.empty();
         return userRepository.findByEmail(email.trim().toLowerCase());
     }
+
+    public Optional<User> findByEmailOrUsername(String identifier) {
+        if (identifier == null || identifier.isBlank()) return Optional.empty();
+        String search = identifier.trim();
+        Optional<User> user = userRepository.findByEmail(search.toLowerCase());
+        if (user.isEmpty()) {
+            user = userRepository.findByUsername(search);
+        }
+        return user;
+    }
 }

@@ -1,0 +1,3 @@
+com\auth\AuthApplicationTests.class
+com\auth\AuthControllerTest.class
+com\auth\UserServiceTest.class

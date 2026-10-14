@@ -56,15 +56,15 @@ public class AuthController {
 
             return ResponseEntity.ok(Map.of(
                 "message", "User saved to MySQL. Verification OTP sent to email.",
-                "email", user.getEmail(),
-                "username", user.getUsername(),
-                "otpCode", otpCode
+                "email", user.getEmail() != null ? user.getEmail() : "",
+                "username", user.getUsername() != null ? user.getUsername() : "",
+                "otpCode", otpCode != null ? otpCode : ""
             ));
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage() != null ? e.getMessage() : "Invalid registration data"));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("error", "Registration failed: " + e.getMessage()));
+                    .body(Map.of("error", "Registration failed: " + (e.getMessage() != null ? e.getMessage() : "Unknown error")));
         }
     }
 
@@ -95,7 +95,7 @@ public class AuthController {
                 "status", "ACTIVE"
             ));
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage() != null ? e.getMessage() : "Invalid verification request"));
         }
     }
 
@@ -115,7 +115,7 @@ public class AuthController {
         String otpCode = emailOtpService.sendOtp(email, purpose != null ? purpose : "REGISTRATION");
         return ResponseEntity.ok(Map.of(
             "message", "A new verification code has been dispatched to your email.",
-            "otpCode", otpCode,
+            "otpCode", otpCode != null ? otpCode : "",
             "email", email
         ));
     }
@@ -147,8 +147,8 @@ public class AuthController {
                 return ResponseEntity.ok(Map.of(
                     "requires2FA", true,
                     "requiresOtp", true,
-                    "email", email,
-                    "otpCode", otpCode,
+                    "email", email != null ? email : "",
+                    "otpCode", otpCode != null ? otpCode : "",
                     "message", "Two-factor authentication code sent to email."
                 ));
             }
@@ -159,7 +159,7 @@ public class AuthController {
             if (msg != null && msg.toLowerCase().contains("verify your email")) {
                 String identifier = payload.containsKey("email") ? payload.get("email") : payload.get("username");
                 if (identifier != null && !identifier.isBlank()) {
-                    userService.findByEmail(identifier).ifPresent(u -> {
+                    userService.findByEmailOrUsername(identifier).ifPresent(u -> {
                         emailOtpService.sendOtp(u.getEmail(), "REGISTRATION");
                     });
                 }
@@ -169,10 +169,10 @@ public class AuthController {
                     "email", identifier != null ? identifier : ""
                 ));
             }
-            return ResponseEntity.badRequest().body(Map.of("error", msg));
+            return ResponseEntity.badRequest().body(Map.of("error", msg != null ? msg : "Authentication failed"));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("error", "Authentication error: " + e.getMessage()));
+                    .body(Map.of("error", "Authentication error: " + (e.getMessage() != null ? e.getMessage() : "Unknown error")));
         }
     }
 
