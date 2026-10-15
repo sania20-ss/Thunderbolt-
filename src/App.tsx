@@ -195,22 +195,20 @@ export default function App() {
                     <button
                       type="button"
                       onClick={() => setAuthMode('login')}
-                      className={`px-5 py-2 text-xs font-semibold rounded-lg transition-colors ${
-                        authMode === 'login'
+                      className={`px-5 py-2 text-xs font-semibold rounded-lg transition-colors ${authMode === 'login'
                           ? 'bg-indigo-600 text-white shadow-sm'
                           : 'text-slate-400 hover:text-white'
-                      }`}
+                        }`}
                     >
                       Sign In
                     </button>
                     <button
                       type="button"
                       onClick={() => setAuthMode('register')}
-                      className={`px-5 py-2 text-xs font-semibold rounded-lg transition-colors ${
-                        authMode === 'register'
+                      className={`px-5 py-2 text-xs font-semibold rounded-lg transition-colors ${authMode === 'register'
                           ? 'bg-indigo-600 text-white shadow-sm'
                           : 'text-slate-400 hover:text-white'
-                      }`}
+                        }`}
                     >
                       Register Account
                     </button>
@@ -276,9 +274,9 @@ export default function App() {
         }}
       />
 
-      <footer className="border-t border-slate-900 bg-slate-950 py-4 text-center text-xs text-slate-500 font-mono">
+      {/* <footer className="border-t border-slate-900 bg-slate-950 py-4 text-center text-xs text-slate-500 font-mono">
         SecureAuth Enterprise System · React Frontend · Java Spring Boot Architecture · MySQL Persistence
-      </footer>
+      </footer> */}
     </div>
   );
 }

@@ -122,14 +122,14 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onSwitchT
       <div className="mb-6">
         <div className="flex items-center justify-between mb-1">
           <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-white">
-            Create Software Account
+            Create Account
           </h2>
-          <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+          {/* <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
             Java API Connected
-          </span>
+          </span> */}
         </div>
         <p className="text-xs sm:text-sm text-slate-400">
-          Register credentials directly to Java Spring Boot &amp; MySQL
+          Enter  registration credentials
         </p>
       </div>
 
@@ -308,12 +308,12 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onSwitchT
                 <div
                   key={step}
                   className={`h-1.5 rounded-full transition-colors ${step <= strengthScore
-                      ? strengthScore >= 4
-                        ? 'bg-emerald-500'
-                        : strengthScore >= 3
-                          ? 'bg-amber-500'
-                          : 'bg-rose-500'
-                      : 'bg-slate-800'
+                    ? strengthScore >= 4
+                      ? 'bg-emerald-500'
+                      : strengthScore >= 3
+                        ? 'bg-amber-500'
+                        : 'bg-rose-500'
+                    : 'bg-slate-800'
                     }`}
                 />
               ))}
@@ -342,12 +342,12 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onSwitchT
             {isLoading ? (
               <>
                 <RefreshCw className="w-4 h-4 animate-spin" />
-                <span>Registering via Java Backend...</span>
+                <span>Registering...</span>
               </>
             ) : (
               <>
                 <UserPlus className="w-4 h-4" />
-                <span>Register &amp; Dispatch Email OTP</span>
+                <span>Register</span>
                 <ArrowRight className="w-4 h-4 ml-1" />
               </>
             )}

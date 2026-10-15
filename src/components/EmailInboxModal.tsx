@@ -92,11 +92,10 @@ export const EmailInboxModal: React.FC<EmailInboxModalProps> = ({
                 <button
                   key={msg.id}
                   onClick={() => handleSelect(msg)}
-                  className={`w-full text-left p-3.5 transition-colors block ${
-                    selectedMessage?.id === msg.id
+                  className={`w-full text-left p-3.5 transition-colors block ${selectedMessage?.id === msg.id
                       ? 'bg-indigo-600/15 border-l-2 border-indigo-500'
                       : 'hover:bg-slate-800/40'
-                  }`}
+                    }`}
                 >
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-[11px] font-mono text-indigo-300 font-semibold truncate max-w-[140px]">
@@ -222,6 +221,7 @@ export const EmailInboxModal: React.FC<EmailInboxModalProps> = ({
             )}
           </div>
         </div>
+
       </div>
     </div>
   );
