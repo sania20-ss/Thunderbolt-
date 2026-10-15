@@ -13,7 +13,9 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(originPatterns = "*", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.PATCH, RequestMethod.DELETE, RequestMethod.OPTIONS}, allowCredentials = "true", maxAge = 3600)
+@CrossOrigin(originPatterns = "*", allowedHeaders = "*", methods = { RequestMethod.GET, RequestMethod.POST,
+        RequestMethod.PUT, RequestMethod.PATCH, RequestMethod.DELETE,
+        RequestMethod.OPTIONS }, allowCredentials = "true", maxAge = 3600)
 public class AuthController {
 
     @Autowired
@@ -55,16 +57,17 @@ public class AuthController {
             String otpCode = emailOtpService.sendOtp(user.getEmail(), "REGISTRATION");
 
             return ResponseEntity.ok(Map.of(
-                "message", "User saved to MySQL. Verification OTP sent to email.",
-                "email", user.getEmail() != null ? user.getEmail() : "",
-                "username", user.getUsername() != null ? user.getUsername() : "",
-                "otpCode", otpCode != null ? otpCode : ""
-            ));
+                    "message", "User saved to MySQL. Verification OTP sent to email.",
+                    "email", user.getEmail() != null ? user.getEmail() : "",
+                    "username", user.getUsername() != null ? user.getUsername() : "",
+                    "otpCode", otpCode != null ? otpCode : ""));
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage() != null ? e.getMessage() : "Invalid registration data"));
+            return ResponseEntity.badRequest()
+                    .body(Map.of("error", e.getMessage() != null ? e.getMessage() : "Invalid registration data"));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("error", "Registration failed: " + (e.getMessage() != null ? e.getMessage() : "Unknown error")));
+                    .body(Map.of("error",
+                            "Registration failed: " + (e.getMessage() != null ? e.getMessage() : "Unknown error")));
         }
     }
 
@@ -90,12 +93,12 @@ public class AuthController {
         try {
             userService.activateUser(email);
             return ResponseEntity.ok(Map.of(
-                "message", "Account verified and activated successfully in MySQL",
-                "email", email,
-                "status", "ACTIVE"
-            ));
+                    "message", "Account verified and activated successfully in MySQL",
+                    "email", email,
+                    "status", "ACTIVE"));
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage() != null ? e.getMessage() : "Invalid verification request"));
+            return ResponseEntity.badRequest()
+                    .body(Map.of("error", e.getMessage() != null ? e.getMessage() : "Invalid verification request"));
         }
     }
 
@@ -114,10 +117,9 @@ public class AuthController {
 
         String otpCode = emailOtpService.sendOtp(email, purpose != null ? purpose : "REGISTRATION");
         return ResponseEntity.ok(Map.of(
-            "message", "A new verification code has been dispatched to your email.",
-            "otpCode", otpCode != null ? otpCode : "",
-            "email", email
-        ));
+                "message", "A new verification code has been dispatched to your email.",
+                "otpCode", otpCode != null ? otpCode : "",
+                "email", email));
     }
 
     /**
@@ -145,12 +147,11 @@ public class AuthController {
                 String email = (String) authResult.get("email");
                 String otpCode = emailOtpService.sendOtp(email, "LOGIN_2FA");
                 return ResponseEntity.ok(Map.of(
-                    "requires2FA", true,
-                    "requiresOtp", true,
-                    "email", email != null ? email : "",
-                    "otpCode", otpCode != null ? otpCode : "",
-                    "message", "Two-factor authentication code sent to email."
-                ));
+                        "requires2FA", true,
+                        "requiresOtp", true,
+                        "email", email != null ? email : "",
+                        "otpCode", otpCode != null ? otpCode : "",
+                        "message", "Two-factor authentication code sent to email."));
             }
 
             return ResponseEntity.ok(authResult);
@@ -164,15 +165,15 @@ public class AuthController {
                     });
                 }
                 return ResponseEntity.badRequest().body(Map.of(
-                    "error", msg,
-                    "requiresOtp", true,
-                    "email", identifier != null ? identifier : ""
-                ));
+                        "error", msg,
+                        "requiresOtp", true,
+                        "email", identifier != null ? identifier : ""));
             }
             return ResponseEntity.badRequest().body(Map.of("error", msg != null ? msg : "Authentication failed"));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("error", "Authentication error: " + (e.getMessage() != null ? e.getMessage() : "Unknown error")));
+                    .body(Map.of("error",
+                            "Authentication error: " + (e.getMessage() != null ? e.getMessage() : "Unknown error")));
         }
     }
 
@@ -180,13 +181,12 @@ public class AuthController {
      * 6. GET /api/auth/health
      * Health check endpoint for verifying backend uptime.
      */
-    @GetMapping("/health")
+    @GetMapping("/")
     public ResponseEntity<?> health() {
         return ResponseEntity.ok(Map.of(
-            "status", "OK",
-            "service", "SecureAuth Enterprise Backend",
-            "version", "1.0.0",
-            "message", "Auth API is running"
-        ));
+                "status", "OK",
+                "service", "SecureAuth Enterprise Backend",
+                "version", "1.0.0",
+                "message", "Auth API is running"));
     }
 }
