@@ -1,126 +1,242 @@
-# SecureAuth — Enterprise Login & Registration System
+# SecureAuth – Login & Registration System
 
-A full-stack authentication and user-management application featuring registration, login, email OTP verification, CAPTCHA support, and MySQL database integration.
+SecureAuth is a full-stack authentication application featuring user registration, login, email OTP verification, CAPTCHA support, and MySQL database integration.
 
-<p align="center">
-  <a href="https://thunderbolt-six.vercel.app/">🌐 Live Application</a> |
-  <a href="https://github.com/sania20-ss/Thunderbolt-">💻 GitHub Repository</a>
-</p>
+**Live Demo:** https://thunderbolt-six.vercel.app/
 
-## Table of Contents
+**GitHub Repository:** https://github.com/sania20-ss/Thunderbolt-
 
-1. [Project Overview](#project-overview)
-2. [Problem Statement](#problem-statement)
-3. [Objectives](#objectives)
-4. [Project Scope](#project-scope)
-5. [Key Features](#key-features)
-6. [Technology Stack](#technology-stack)
-7. [System Architecture](#system-architecture)
-8. [Process Flow](#process-flow)
-9. [Deployment Links](#deployment-links)
-10. [Database and MySQL Evidence](#database-and-mysql-evidence)
-11. [Requirements](#requirements)
-12. [Run Locally](#run-locally)
-13. [Environment Configuration](#environment-configuration)
-14. [Test Case Execution Record](#test-case-execution-record)
-15. [Security Considerations](#security-considerations)
-16. [Future Enhancements](#future-enhancements)
-17. [References](#references)
+## 1. Problem Statement
 
-## 1. Project Overview
+Applications require secure and reliable authentication to manage user accounts and protect user information. SecureAuth demonstrates a full-stack authentication system integrating a web frontend, Java backend, MySQL database, and email verification.
 
-SecureAuth is a web-based authentication application designed to provide login, registration, OTP verification, and user management features.
+## 2. Objectives
 
-The frontend is developed using React and TypeScript, while the backend uses Java and Spring Boot. MySQL stores user information, with Aiven providing cloud database hosting. The frontend is deployed on Vercel and the backend on Render.
+- Provide login and registration functionality.
+- Support email OTP verification and CAPTCHA.
+- Connect the frontend with a Spring Boot backend.
+- Store user records in MySQL.
+- Deploy the application using cloud services.
 
-## 2. Problem Statement
+## 3. Project Scope
 
-Applications require reliable authentication mechanisms to manage user registration, verify identity, protect user accounts, and maintain consistent user records.
+The project covers user registration, login, OTP verification, dashboard access, database connectivity, and cloud deployment. Further security testing and production hardening may be required before real-world use.
 
-Poorly integrated authentication systems can lead to insecure access, inconsistent data, and deployment difficulties.
+## 4. Key Features
 
-SecureAuth addresses these challenges by demonstrating a full-stack authentication workflow that integrates a modern web interface, Java REST APIs, MySQL persistence, email OTP verification, and CAPTCHA support.
+- User registration and login
+- Email OTP verification
+- CAPTCHA support
+- User dashboard and logout
+- MySQL database integration
+- Cloud deployment
 
-## 3. Objectives
+## 5. Technology Stack
 
-- Develop a user-friendly login and registration interface.
-- Implement email OTP verification flows.
-- Integrate React with a Spring Boot REST API.
-- Store and manage user records using MySQL.
-- Configure environment variables for deployment.
-- Deploy the frontend and backend independently.
-- Demonstrate cloud database connectivity using Aiven.
+| Component | Technology |
+|---|---|
+| Frontend | React, TypeScript, Vite |
+| Styling | Tailwind CSS |
+| Backend | Java 21, Spring Boot |
+| API | Spring Web |
+| Security | Spring Security |
+| Database | MySQL |
+| ORM | Spring Data JPA, Hibernate |
+| Email | Spring Boot Starter Mail |
+| AI Integration | Google Gemini API |
+| Database Hosting | Aiven |
+| Backend Hosting | Render |
+| Frontend Hosting | Vercel |
+| Version Control | Git, GitHub |
 
-## 4. Project Scope
-
-### Included
-
-- User registration and login.
-- OTP verification interface.
-- User dashboard and logout.
-- Spring Boot REST backend.
-- Spring Security integration.
-- MySQL database connectivity.
-- Email delivery configuration.
-- CAPTCHA-related API support.
-- Cloud deployment using Vercel, Render, and Aiven.
-
-### Outside the Current Scope
-
-- Independent security audit.
-- Guaranteed high availability and disaster recovery.
-- Formal penetration testing.
-- Production monitoring and alerting unless configured separately.
-
-## 5. Key Features
-
-- **Registration:** Interface for creating user accounts.
-- **Login:** User authentication interface.
-- **Email OTP:** Verification screens and email integration.
-- **CAPTCHA:** Additional validation support.
-- **Dashboard:** User-facing dashboard.
-- **Database Integration:** MySQL persistence through Spring Data JPA and Hibernate.
-- **Cloud Deployment:** Separately hosted frontend, backend, and database.
-
-> Note: Production security depends on the actual backend implementation and deployment configuration. UI features alone do not guarantee secure authentication.
-
-## 6. Technology Stack
-
-| Component | Technology | Purpose |
-|---|---|---|
-| Frontend | React 19 | User interface |
-| Language | TypeScript | Type-safe frontend development |
-| Build Tool | Vite | Development and production builds |
-| Styling | Tailwind CSS 4 | Interface styling |
-| Icons | Lucide React | UI icons |
-| AI Integration | Google Gemini API | AI functionality where enabled |
-| Backend | Java 21 | Server-side development |
-| Framework | Spring Boot 3.2.4 | Backend services |
-| API | Spring Web | REST endpoints |
-| Security | Spring Security | Backend security components |
-| ORM | Spring Data JPA, Hibernate | Database operations |
-| Database | MySQL | Relational data storage |
-| Cloud Database | Aiven | Managed MySQL hosting |
-| Email | Spring Boot Starter Mail | Email delivery |
-| Backend Hosting | Render | Backend deployment |
-| Frontend Hosting | Vercel | Frontend deployment |
-| Version Control | Git, GitHub | Source-code management |
-| Testing | JUnit 5, Spring Boot Test | Backend testing support |
-
-## 7. System Architecture
+## 6. System Architecture
 
 ```text
-             User / Browser
-                   |
-                   v
-       React + TypeScript Frontend
-                (Vercel)
-                   |
-                   | HTTPS API Requests
-                   v
-          Spring Boot REST API
-                (Render)
-             /           \
-            v             v
-      Aiven MySQL     SMTP Email
-       Database       Service
+User
+ |
+ v
+React + TypeScript Frontend
+        (Vercel)
+          |
+          v
+Spring Boot REST API
+        (Render)
+          |
+          v
+      Aiven MySQL
+          |
+          v
+     User Records
+
+Spring Boot --> SMTP Email Service
+```
+
+## 7. Process Flow
+
+1. The user opens the application.
+2. The user registers or logs in.
+3. The backend validates the request.
+4. User data is stored or retrieved from MySQL as required.
+5. OTP verification is performed when applicable.
+6. After successful authentication, the user accesses the dashboard.
+
+## 8. Deployment Links
+
+| Service | Link |
+|---|---|
+| GitHub Repository | [Thunderbolt-](https://github.com/sania20-ss/Thunderbolt-) |
+| Live Frontend | [Vercel Application](https://thunderbolt-six.vercel.app/) |
+| Backend | [Render Service](https://backend-db-login-register-application.onrender.com) |
+| Render Dashboard | [Service Settings](https://dashboard.render.com/static/srv-db7qhraj9qps73dd1pjg/settings) |
+| Aiven Console | [Aiven MySQL](https://console.aiven.io/) |
+
+## 9. Database and MySQL Screenshot
+
+The application uses MySQL to store user records. The following query retrieves user information from the `users` table.
+
+```sql
+SELECT
+    id,
+    username,
+    first_name,
+    last_name,
+    email,
+    created_at,
+    department,
+    status
+FROM defaultdb.users;
+```
+
+### MySQL Query Result
+
+<img width="1167" height="641" alt="image" src="https://github.com/user-attachments/assets/f1fd8b0b-c507-4c03-a18a-b61fce5a6304" />
+
+
+
+
+*Figure 1: MySQL Workbench result showing user records.*
+
+## 10. Requirements
+
+- Node.js and npm
+- Java JDK 21
+- Apache Maven
+- Aiven MySQL credentials
+- Gemini API key, if required by enabled features
+- SMTP credentials, if email delivery is enabled
+
+## 11. How to Run the Project Locally
+
+### A. Start the Frontend
+
+Open a terminal in the project root directory.
+
+**Step 1: Install dependencies**
+
+```bash
+npm install
+```
+
+**Step 2: Configure the environment**
+
+Create or update `.env.local` and configure the required Gemini API key and backend URL.
+
+```dotenv
+GEMINI_API_KEY=your_gemini_api_key
+VITE_API=http://localhost:8080
+```
+
+Replace the placeholder with your actual API key. Never commit real secrets to GitHub.
+
+**Step 3: Start the frontend**
+
+```bash
+npm run dev
+```
+
+The Vite development server runs on port `3000`.
+
+### B. Start the Backend
+
+Open a **second terminal** in the project root directory.
+
+**Step 1: Navigate to the backend**
+
+```bash
+cd backend-java
+```
+
+**Step 2: Configure database and email variables**
+
+
+
+
+Use the actual Aiven JDBC connection URL and credentials. These are placeholders, not literal values.
+
+**Step 3: Start Spring Boot**
+
+```bash
+mvn spring-boot:run
+```
+
+The backend is configured to run on port `8080`.
+
+### C. Access the Application
+
+Open the frontend in your browser:
+
+http://localhost:3000
+
+Make sure the frontend API configuration points to the running backend and that the backend can connect to MySQL.
+
+## 12. Test Cases
+
+The following test cases should be executed and updated according to the actual results.
+
+| ID | Test Case | Expected Result | Status |
+|---|---|---|---|
+| TC-01 | Submit invalid registration details | Validation error displayed | Not Executed |
+| TC-02 | Register with valid details | Account is created successfully | Not Executed |
+| TC-03 | Verify a valid OTP | Verification succeeds | Not Executed |
+| TC-04 | Login with valid credentials | Dashboard is accessible | Not Executed |
+| TC-05 | Login with invalid credentials | Access is denied | Not Executed |
+| TC-06 | Connect to Aiven MySQL | Database connection succeeds | Not Executed |
+
+*Update each status to Passed, Failed, or Blocked after testing.*
+
+## 13. Security Considerations
+
+- Do not commit API keys or database credentials.
+- Use HTTPS for deployed services.
+- Verify backend password hashing and authentication.
+- Apply OTP expiry and attempt limits where required.
+- Configure Spring Security and CORS appropriately.
+- Avoid publishing real users' personal information.
+
+## 14. Future Enhancements
+
+- Automated integration testing
+- OTP rate limiting
+- Improved session and token management
+- API documentation using Swagger
+- Application monitoring and logging
+
+## 15. References
+
+1. ChatGPT: https://chatgpt.com/
+2. Google Gemini: https://gemini.google.com/
+3. Gemini API Documentation: https://ai.google.dev/gemini-api/docs
+4. Codecademy: https://www.codecademy.com/
+5. Stack Overflow: https://stackoverflow.com/
+6. React Documentation: https://react.dev/
+7. Vite Documentation: https://vite.dev/
+8. Spring Boot Documentation: https://docs.spring.io/spring-boot/
+9. MySQL Documentation: https://dev.mysql.com/doc/
+10. Aiven Documentation: https://docs.aiven.io/
+11. Render Documentation: https://render.com/docs
+12. Vercel Documentation: https://vercel.com/docs
+
+---
+
+**Project:** SecureAuth – Login & Registration System
+
