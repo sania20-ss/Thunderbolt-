@@ -185,12 +185,12 @@ The following test cases should be executed and updated according to the actual 
 
 | ID | Test Case | Expected Result | Status |
 |---|---|---|---|
-| TC-01 | Submit invalid registration details | Validation error displayed | Not Executed |
-| TC-02 | Register with valid details | Account is created successfully | Not Executed |
-| TC-03 | Verify a valid OTP | Verification succeeds | Not Executed |
-| TC-04 | Login with valid credentials | Dashboard is accessible | Not Executed |
-| TC-05 | Login with invalid credentials | Access is denied | Not Executed |
-| TC-06 | Connect to Aiven MySQL | Database connection succeeds | Not Executed |
+| TC-01 | Submit invalid registration details | Validation error displayed |  Executed |
+| TC-02 | Register with valid details | Account is created successfully |  Executed |
+| TC-03 | Verify a valid OTP | Verification succeeds | Executed |
+| TC-04 | Login with valid credentials | Dashboard is accessible |  Executed |
+| TC-05 | Login with invalid credentials | Access is denied |  Executed |
+| TC-06 | Connect to Aiven MySQL | Database connection succeeds |  Executed |
 
 *Update each status to Passed, Failed, or Blocked after testing.*
 
