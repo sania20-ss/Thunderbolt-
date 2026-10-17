@@ -137,18 +137,8 @@ Open a terminal in the project root directory.
 npm install
 ```
 
-**Step 2: Configure the environment**
 
-Create or update `.env.local` and configure the required Gemini API key and backend URL.
-
-```dotenv
-GEMINI_API_KEY=your_gemini_api_key
-VITE_API=http://localhost:8080
-```
-
-Replace the placeholder with your actual API key. Never commit real secrets to GitHub.
-
-**Step 3: Start the frontend**
+**Step 2: Start the frontend**
 
 ```bash
 npm run dev
