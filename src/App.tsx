@@ -4,9 +4,6 @@ import { LoginForm } from './components/LoginForm';
 import { RegisterForm } from './components/RegisterForm';
 import { OtpVerificationScreen } from './components/OtpVerificationScreen';
 import { UserDashboard } from './components/UserDashboard';
-import { MysqlStudio } from './components/MysqlStudio';
-import { JavaBackendStudio } from './components/JavaBackendStudio';
-import { EmailInboxModal } from './components/EmailInboxModal';
 import { emailService } from './services/emailService';
 import { dbService } from './services/db';
 import { User, EmailMessage } from './types/auth';
@@ -151,7 +148,7 @@ export default function App() {
                 <span className="text-xs font-mono font-bold text-amber-300 bg-slate-950 px-2 py-0.5 rounded border border-slate-800">
                   {emailToast.otpCode}
                 </span>
-                <button
+                {/* <button
                   type="button"
                   onClick={() => {
                     setIsInboxOpen(true);
@@ -161,7 +158,7 @@ export default function App() {
                 >
                   <span>Open Email</span>
                   <ExternalLink className="w-3 h-3" />
-                </button>
+                </button> */}
               </div>
             </div>
             <button
@@ -184,7 +181,7 @@ export default function App() {
                 currentUser={currentUser}
                 onLogout={handleLogout}
                 onUserUpdated={handleUserUpdated}
-                onOpenMysqlStudio={() => setCurrentView('mysql')}
+                // onOpenMysqlStudio={() => setCurrentView('mysql')}
                 onOpenJavaStudio={() => setCurrentView('java')}
               />
             ) : (
@@ -196,8 +193,8 @@ export default function App() {
                       type="button"
                       onClick={() => setAuthMode('login')}
                       className={`px-5 py-2 text-xs font-semibold rounded-lg transition-colors ${authMode === 'login'
-                          ? 'bg-indigo-600 text-white shadow-sm'
-                          : 'text-slate-400 hover:text-white'
+                        ? 'bg-indigo-600 text-white shadow-sm'
+                        : 'text-slate-400 hover:text-white'
                         }`}
                     >
                       Sign In
@@ -206,8 +203,8 @@ export default function App() {
                       type="button"
                       onClick={() => setAuthMode('register')}
                       className={`px-5 py-2 text-xs font-semibold rounded-lg transition-colors ${authMode === 'register'
-                          ? 'bg-indigo-600 text-white shadow-sm'
-                          : 'text-slate-400 hover:text-white'
+                        ? 'bg-indigo-600 text-white shadow-sm'
+                        : 'text-slate-400 hover:text-white'
                         }`}
                     >
                       Register Account
@@ -247,36 +244,10 @@ export default function App() {
           </div>
         )}
 
-        {/* VIEW 2: MYSQL DATABASE STUDIO */}
-        {currentView === 'mysql' && <MysqlStudio />}
-
-        {/* VIEW 3: JAVA BACKEND STUDIO */}
-        {currentView === 'java' && <JavaBackendStudio />}
       </main>
-
-      {/* Modal: Transactional Email Inbox */}
-      <EmailInboxModal
-        isOpen={isInboxOpen}
-        onClose={() => setIsInboxOpen(false)}
-        onAutoFillOtp={(code) => {
-          if (authMode === 'otp') {
-            const inputs = document.querySelectorAll('input[pattern="[0-9]*"]');
-            if (inputs.length === 6) {
-              code.split('').forEach((digit, i) => {
-                const el = inputs[i] as HTMLInputElement;
-                if (el) {
-                  el.value = digit;
-                  el.dispatchEvent(new Event('input', { bubbles: true }));
-                }
-              });
-            }
-          }
-        }}
-      />
-
-      {/* <footer className="border-t border-slate-900 bg-slate-950 py-4 text-center text-xs text-slate-500 font-mono">
-        SecureAuth Enterprise System · React Frontend · Java Spring Boot Architecture · MySQL Persistence
-      </footer> */}
+      <footer className="border-t border-slate-900 bg-slate-950 py-4 text-center text-xs text-slate-500 font-mono">
+        SecureAuth Enterprise System
+      </footer>
     </div>
   );
 }

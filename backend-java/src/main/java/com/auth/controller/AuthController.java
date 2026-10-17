@@ -57,7 +57,7 @@ public class AuthController {
             String otpCode = emailOtpService.sendOtp(user.getEmail(), "REGISTRATION");
 
             return ResponseEntity.ok(Map.of(
-                    "message", "User saved to MySQL. Verification OTP sent to email.",
+                    "message", "User saved, Verification OTP sent to email.",
                     "email", user.getEmail() != null ? user.getEmail() : "",
                     "username", user.getUsername() != null ? user.getUsername() : "",
                     "otpCode", otpCode != null ? otpCode : ""));
@@ -93,7 +93,7 @@ public class AuthController {
         try {
             userService.activateUser(email);
             return ResponseEntity.ok(Map.of(
-                    "message", "Account verified and activated successfully in MySQL",
+                    "message", "Account verified and activated successfully",
                     "email", email,
                     "status", "ACTIVE"));
         } catch (IllegalArgumentException e) {

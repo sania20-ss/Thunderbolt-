@@ -223,7 +223,7 @@ class MysqlDatabaseService {
       'OTP_VERIFICATION_SUCCESS',
       email,
       'SUCCESS',
-      `User account verified via email OTP and activated in MySQL (ID: ${user.id}).`
+      `User account verified via email OTP and activated (ID: ${user.id}).`
     );
     return true;
   }
@@ -492,7 +492,7 @@ class MysqlDatabaseService {
       return {
         success: true,
         columns: ['Status'],
-        rows: [['Query executed successfully in MySQL']],
+        rows: [['Query executed successfully']],
         affectedRows: 1,
         latencyMs
       };

@@ -124,9 +124,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onSwitchT
           <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-white">
             Create Account
           </h2>
-          {/* <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-            Java API Connected
-          </span> */}
+
         </div>
         <p className="text-xs sm:text-sm text-slate-400">
           Enter  registration credentials

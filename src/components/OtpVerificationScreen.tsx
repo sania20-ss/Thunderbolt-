@@ -22,7 +22,7 @@ export const OtpVerificationScreen: React.FC<OtpVerificationScreenProps> = ({
   const [errorMsg, setErrorMsg] = useState<string>('');
   const [isVerifying, setIsVerifying] = useState<boolean>(false);
   const [successAnimation, setSuccessAnimation] = useState<boolean>(false);
-  
+
   // 5-minute countdown (300 seconds)
   const [timeLeft, setTimeLeft] = useState<number>(300);
   // Resend cooldown (30 seconds)
@@ -175,8 +175,8 @@ export const OtpVerificationScreen: React.FC<OtpVerificationScreenProps> = ({
           {purpose === 'REGISTRATION'
             ? 'Verify Your Email'
             : purpose === 'LOGIN_2FA'
-            ? 'Two-Factor Authentication'
-            : 'Reset Password Verification'}
+              ? 'Two-Factor Authentication'
+              : 'Reset Password Verification'}
         </h2>
         <p className="text-xs text-slate-400 leading-relaxed max-w-xs mx-auto">
           We sent a 6-digit verification code to
@@ -225,15 +225,14 @@ export const OtpVerificationScreen: React.FC<OtpVerificationScreenProps> = ({
                 handlePastedCode(e.clipboardData.getData('text'));
               }}
               disabled={isVerifying || successAnimation}
-              className={`w-11 h-13 sm:w-12 sm:h-14 text-center font-mono text-xl font-bold rounded-xl bg-slate-950/80 border transition-all focus:outline-none focus:ring-2 ${
-                successAnimation
-                  ? 'border-emerald-500 text-emerald-300 bg-emerald-950/30'
-                  : errorMsg
+              className={`w-11 h-13 sm:w-12 sm:h-14 text-center font-mono text-xl font-bold rounded-xl bg-slate-950/80 border transition-all focus:outline-none focus:ring-2 ${successAnimation
+                ? 'border-emerald-500 text-emerald-300 bg-emerald-950/30'
+                : errorMsg
                   ? 'border-rose-500 text-rose-300 focus:ring-rose-500/30'
                   : digit
-                  ? 'border-indigo-500 text-white bg-indigo-950/20 focus:ring-indigo-500/40'
-                  : 'border-slate-800 text-slate-100 hover:border-slate-700 focus:border-indigo-500 focus:ring-indigo-500/30'
-              }`}
+                    ? 'border-indigo-500 text-white bg-indigo-950/20 focus:ring-indigo-500/40'
+                    : 'border-slate-800 text-slate-100 hover:border-slate-700 focus:border-indigo-500 focus:ring-indigo-500/30'
+                }`}
             />
           ))}
         </div>
@@ -250,7 +249,7 @@ export const OtpVerificationScreen: React.FC<OtpVerificationScreenProps> = ({
         {successAnimation && (
           <div className="flex items-center justify-center gap-1.5 text-xs text-emerald-400 mt-3 font-medium animate-bounce">
             <CheckCircle2 className="w-4 h-4" />
-            <span>Verified in MySQL! Redirecting...</span>
+            <span>Verified! Redirecting...</span>
           </div>
         )}
 
@@ -272,12 +271,12 @@ export const OtpVerificationScreen: React.FC<OtpVerificationScreenProps> = ({
         {isVerifying ? (
           <>
             <RefreshCw className="w-4 h-4 animate-spin" />
-            <span>Verifying via Java API...</span>
+            <span>Verifying...</span>
           </>
         ) : successAnimation ? (
           <>
             <CheckCircle2 className="w-4 h-4" />
-            <span>Verified in Java Backend</span>
+            <span>Verified </span>
           </>
         ) : (
           <>
@@ -307,7 +306,7 @@ export const OtpVerificationScreen: React.FC<OtpVerificationScreenProps> = ({
       </div>
 
       {/* Software Mailbox link */}
-      <div className="mt-4 pt-3 text-center border-t border-slate-800/50">
+      {/* <div className="mt-4 pt-3 text-center border-t border-slate-800/50">
         <button
           type="button"
           onClick={onOpenMailbox}
@@ -315,8 +314,8 @@ export const OtpVerificationScreen: React.FC<OtpVerificationScreenProps> = ({
         >
           <span>Check Email in Software Mailbox</span>
           <ExternalLink className="w-3 h-3" />
-        </button>
-      </div>
+        </button> */}
+      {/* </div> */}
     </div>
   );
 };

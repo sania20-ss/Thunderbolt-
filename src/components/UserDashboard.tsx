@@ -25,7 +25,6 @@ interface UserDashboardProps {
   currentUser: UserType;
   onLogout: () => void;
   onUserUpdated: (updated: UserType) => void;
-  onOpenMysqlStudio: () => void;
   onOpenJavaStudio: () => void;
 }
 
@@ -33,7 +32,6 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({
   currentUser,
   onLogout,
   onUserUpdated,
-  onOpenMysqlStudio,
   onOpenJavaStudio,
 }) => {
   const [activeTab, setActiveTab] = useState<'profile' | 'security' | 'directory' | 'logs'>('profile');
@@ -76,10 +74,10 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({
     });
 
     if (updated) {
-      dbService.logAction('PROFILE_UPDATED', updated.email, 'SUCCESS', 'User profile details updated in MySQL.', updated.id);
+      dbService.logAction('PROFILE_UPDATED', updated.email, 'SUCCESS', 'User profile details updated.', updated.id);
       onUserUpdated(updated);
       setIsEditingProfile(false);
-      setProfileSuccessMsg('Profile information updated in MySQL successfully.');
+      setProfileSuccessMsg('Profile information updated successfully.');
       setTimeout(() => setProfileSuccessMsg(''), 4000);
     }
   };
@@ -131,12 +129,12 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({
     const updated = dbService.updateUser(currentUser.id, { passwordHash: newHash });
 
     if (updated) {
-      dbService.logAction('PASSWORD_CHANGED', updated.email, 'SUCCESS', 'Password updated and re-hashed in MySQL.', updated.id);
+      dbService.logAction('PASSWORD_CHANGED', updated.email, 'SUCCESS', 'Password updated and re-hashed.', updated.id);
       onUserUpdated(updated);
       setCurrentPwd('');
       setNewPwd('');
       setConfirmPwd('');
-      setPwdMsg({ type: 'success', text: 'Password changed successfully in MySQL database.' });
+      setPwdMsg({ type: 'success', text: 'Password changed successfully.' });
     }
   };
 
@@ -203,13 +201,7 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({
           </div>
 
           <div className="flex items-center gap-2 w-full sm:w-auto">
-            {/* <button
-              onClick={onOpenMysqlStudio}
-              className="flex-1 sm:flex-none px-3.5 py-2 text-xs font-medium text-slate-300 hover:text-white bg-slate-800/80 hover:bg-slate-700 border border-slate-700 rounded-xl transition-colors flex items-center justify-center gap-1.5"
-            >
-              <Database className="w-3.5 h-3.5 text-indigo-400" />
-              
-            </button> */}
+
             <button
               onClick={onLogout}
               className="flex-1 sm:flex-none px-3.5 py-2 text-xs font-medium text-rose-400 hover:text-rose-200 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 rounded-xl transition-colors flex items-center justify-center gap-1.5"
@@ -242,7 +234,7 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({
             <Shield className="w-3.5 h-3.5" />
             <span>Security &amp; 2FA</span>
           </button>
-          <button
+          {/* <button
             onClick={() => setActiveTab('directory')}
             className={`px-3.5 py-1.5 text-xs font-medium rounded-lg transition-colors flex items-center gap-2 whitespace-nowrap ${activeTab === 'directory'
               ? 'bg-indigo-600 text-white shadow-sm'
@@ -251,7 +243,7 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({
           >
             <Users className="w-3.5 h-3.5" />
             <span>Registered Users ({allUsers.length})</span>
-          </button>
+          </button> */}
           {/* <button
             onClick={() => setActiveTab('logs')}
             className={`px-3.5 py-1.5 text-xs font-medium rounded-lg transition-colors flex items-center gap-2 whitespace-nowrap ${activeTab === 'logs'
@@ -352,7 +344,7 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({
                     className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold rounded-lg flex items-center gap-1.5 transition-colors"
                   >
                     <Save className="w-3.5 h-3.5" />
-                    <span>Save to MySQL</span>
+                    <span>Save </span>
                   </button>
                   <button
                     type="button"
@@ -569,13 +561,7 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({
               </p>
             </div>
 
-            {/* <button
-              onClick={handleExportUsers}
-              className="px-3 py-1.5 text-xs font-medium text-slate-200 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg transition-colors flex items-center gap-1.5"
-            >
-              <Download className="w-3.5 h-3.5 text-indigo-400" />
-              <span>Export JSON</span>
-            </button> */}
+
           </div>
 
           {/* Search & Filter */}
@@ -660,7 +646,7 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({
                       {user.id !== currentUser.id && (
                         <button
                           onClick={() => {
-                            if (confirm(`Delete user ${user.email} from MySQL database?`)) {
+                            if (confirm(`Delete user ${user.email} from database?`)) {
                               dbService.deleteUser(user.id);
                               // Force re-render
                               setSearchQuery(q => q + ' ');

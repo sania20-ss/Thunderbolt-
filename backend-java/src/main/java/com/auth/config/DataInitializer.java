@@ -44,7 +44,7 @@ public class DataInitializer implements CommandLineRunner {
                         .build();
 
                 userRepository.save(admin);
-                log.info("Initialized default admin user [admin@enterprise.io] in MySQL database (auth_db.users)");
+                log.info("Initialized default admin user [admin@enterprise.io] in  database (auth_db.users)");
             }
 
             // Pre-seed demo Developer account in MySQL if not present
@@ -66,7 +66,7 @@ public class DataInitializer implements CommandLineRunner {
                         .build();
 
                 userRepository.save(dev);
-                log.info("Initialized default developer user [sarah.connor@enterprise.io] in MySQL database");
+                log.info("Initialized default developer user [sarah.connor@enterprise.io] in database");
             }
         } catch (Exception e) {
             log.warn("Database initialization notice: {}", e.getMessage());
